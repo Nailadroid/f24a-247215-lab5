@@ -68,8 +68,15 @@ function updateFirePosition() {
 
   moveBtn.addEventListener("click", function () {
     spotInput.setCustomValidity("");
+
     var val = spotInput.value.trim();
     var pos = Number(val);
+
+    if (val === "" || Number.isNaN(pos) || !Number.isInteger(pos) || pos < 1 || pos > 6) {
+      spotInput.setCustomValidity("not a number");
+      spotInput.reportValidity();
+      return;
+    }
 
     var current = getCurrentNotice();
     if (!current) return;
