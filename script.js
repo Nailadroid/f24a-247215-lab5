@@ -65,3 +65,30 @@ function updateFirePosition() {
 
   upBtn.addEventListener("click", function () { tradeRows("up"); });
   downBtn.addEventListener("click", function () { tradeRows("down"); });
+
+  moveBtn.addEventListener("click", function () {
+    spotInput.setCustomValidity("");
+    var val = spotInput.value.trim();
+    var pos = Number(val);
+
+    var current = getCurrentNotice();
+    if (!current) return;
+
+    var allNotices = Array.from(wall.querySelectorAll(".notice"));
+    var targetIdx = pos - 1;
+    var currentIdx = allNotices.indexOf(current);
+
+    if (currentIdx === targetIdx) return;
+
+    allNotices.splice(currentIdx, 1);
+    allNotices.splice(targetIdx, 0, current);
+
+    var rows = wall.querySelectorAll(".row");
+    for (var i = 0; i < allNotices.length; i++) {
+      var rowIdx = Math.floor(i / 3);
+      rows[rowIdx].appendChild(allNotices[i]);
+    }
+
+    statusLine.textContent = "Moved to position " + pos + ".";
+    updateFirePosition();
+  });
